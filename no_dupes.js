@@ -16,7 +16,6 @@ let SortById = (a, b) => ('' + a._id).localeCompare(b._id);
 let SortByTimestamp = (a, b) => ('' + a.entryDate).localeCompare(b.entryDate);
 let SortByEmail = (a, b) => ('' + a.email).localeCompare(b.email);
 
-
 //Object helper functions
 let DoesObjectShareKeyValuePairs = (baseObj, compareObj) =>{
   for(let key in baseObj){
@@ -50,9 +49,11 @@ let logItem = (item, tabCount = 0) =>{
 }
 
 /* FilterUniqueParamByLatestTime()
-      -Removes all but the most recently created item, or if there are duplicates of
-       the latest timestamp, removes all but the last item found in the original data.
-       Directly removes one element from arrSlice and pushes it to resultArray.
+      -Logs all but the most recently created item as marked for deletion, or if there
+       are duplicates of the latest timestamp, logs all but the last item found in
+       the original dataset matching the timestamp and parameter.
+
+       One element is directly removed from arrSlice; this is used for logging.
       -Inputs:
         arrSlice    - Array of items to filter.
                       ITEMS MUST HAVE THE SAME VALUE FOR THE SPECIFIED PARAMETER.
@@ -87,7 +88,7 @@ let FilterUniqueParamByLatestTime = (arrSlice, param ) =>{
 }
 
 /* FilterArrayByParam
-      -Removes duplicate items specified by the input parameter.
+      -Removes duplicate items, as filtered by the input parameter.
       -Inputs
         sortedArr   - The full array to de-duplicate.
                       THE ARRAY MUST BE PRE-SORTED BY THE SPECIFIED PARAMETER
@@ -129,7 +130,7 @@ let emailFilteredContents = FilterArrayByParam(emailSortedContents, "email");
 
 // console.log('\nEMAIL FILTERED CONTENT:')
 // emailFilteredContents.forEach(item => logItem(item))
-// console.log('Email Filtered content length: ', emailFilteredContents.length);
+// console.log('\nEmail Filtered content length: ', emailFilteredContents.length);
 
 //Filter by ID
 let idSortedContents = emailFilteredContents.slice(0).sort(SortById);
@@ -137,7 +138,7 @@ let idFilteredContents = FilterArrayByParam(idSortedContents, "_id");
 
 // console.log('\nID FILTERED CONTENT:')
 // idFilteredContents.forEach(item => logItem(item))
-// console.log('Id Filtered content length: ', idFilteredContents.length);
+// console.log('\nId Filtered content length: ', idFilteredContents.length);
 
 //Log results
 console.log('\nFILTERED CONTENT:');
@@ -152,4 +153,4 @@ let output = {
 var jsonOutput = JSON.stringify(output);
 let callback = function(){};
 fs.writeFile('leads_deduped.json', jsonOutput, 'utf8', callback);
-console.log('Leads results saved to leads_deduped.json');
+console.log('Leads saved to leads_deduped.json');
